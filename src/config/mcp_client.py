@@ -14,6 +14,14 @@ import aiohttp
 
 logger = logging.getLogger(__name__)
 
+# Importação opcional do MCP
+try:
+    import mcp
+    MCP_AVAILABLE = True
+except ImportError:
+    MCP_AVAILABLE = False
+    logger.warning("MCP (Model Context Protocol) não está disponível. Instale com: pip install mcp")
+
 @dataclass
 class MCPConfig:
     """Configuração para MCP Alpha Vantage"""
@@ -44,7 +52,7 @@ class AlphaVantageMCPClient:
     
     def is_available(self) -> bool:
         """Verifica se MCP está disponível"""
-        return self.config.enabled and bool(self.config.api_key)
+        return MCP_AVAILABLE and self.config.enabled and bool(self.config.api_key)
     
     async def _get_session(self) -> aiohttp.ClientSession:
         """Obtém sessão HTTP reutilizável"""

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![CrewAI](https://img.shields.io/badge/CrewAI-v0.56.0-blue.svg)
+![CrewAI](https://img.shields.io/badge/CrewAI-v0.186.1-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.11+-green.svg)
 ![Docker](https://img.shields.io/badge/Docker-Multi--Arch-blue.svg)
 ![LLM](https://img.shields.io/badge/LLM-Multi--Provider-brightgreen.svg)
@@ -182,6 +182,12 @@ venv\Scripts\activate     # Windows
 
 # Instale dependências
 pip install -r requirements.txt
+
+# ⚠️ PROBLEMA CONHECIDO: Se o comando acima falhar com erro sobre 'mcp':
+# Use o arquivo alternativo sem MCP:
+pip install -r requirements-no-mcp.txt
+# Depois instale o MCP manualmente (opcional):
+pip install mcp
 
 # Configure ambiente
 cp .env.example .env

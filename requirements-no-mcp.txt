@@ -8,7 +8,7 @@ langchain-openai
 langchain-anthropic
 langchain-ollama
 
-# Financial data
+# Financial data sources
 yfinance
 pandas
 numpy
@@ -20,19 +20,14 @@ beautifulsoup4
 selenium
 google-search-results
 
-# Tavily AI Search
+# Search providers
 tavily-python
 
-# SearXNG and Browserless integration
+# Browser automation
 pyppeteer
 playwright
 httpx
 aiohttp
-
-# MCP (Model Context Protocol) for Alpha Vantage
-# Nota: Se mcp não estiver disponível no seu ambiente, comente a linha abaixo
-# e instale manualmente: pip install mcp
-mcp
 
 # Data visualization and analysis
 matplotlib
@@ -42,12 +37,12 @@ seaborn
 # Environment and configuration
 python-dotenv
 
-# Utilities
+# Core utilities
 pydantic
 langchain
 langchain-community
 
-# Development
+# Development tools
 pytest
 black
 flake8
