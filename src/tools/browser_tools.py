@@ -30,11 +30,11 @@ class BrowserTools:
         """
         Faz scraping de um website usando Browserless e retorna um resumo do conteúdo.
         
-        Args:
+        Parâmetros:
             url: URL do website
             max_words: Número máximo de palavras no resumo
             
-        Returns:
+        Retorna:
             Resumo do conteúdo do website
         """
         try:
@@ -57,10 +57,10 @@ class BrowserTools:
         """
         Faz scraping usando Browserless.
         
-        Args:
+        Parâmetros:
             url: URL para fazer scraping
             
-        Returns:
+        Retorna:
             HTML content ou None se falhar
         """
         try:
@@ -112,11 +112,11 @@ class BrowserTools:
         """
         Fallback: scraping tradicional com requests.
         
-        Args:
+        Parâmetros:
             url: URL do website
             max_words: Número máximo de palavras
             
-        Returns:
+        Retorna:
             Conteúdo processado
         """
         try:
@@ -138,12 +138,12 @@ class BrowserTools:
         """
         Processa o conteúdo HTML extraído.
         
-        Args:
+        Parâmetros:
             html_content: HTML do website
             url: URL original
             max_words: Número máximo de palavras
             
-        Returns:
+        Retorna:
             Conteúdo processado e resumido
         """
         try:
@@ -199,10 +199,10 @@ class BrowserTools:
         """
         Obtém o título de uma página web.
         
-        Args:
+        Parâmetros:
             url: URL da página
             
-        Returns:
+        Retorna:
             Título da página
         """
         try:
@@ -227,10 +227,10 @@ class BrowserTools:
         """
         Extrai todos os links de uma página.
         
-        Args:
+        Parâmetros:
             url: URL da página
             
-        Returns:
+        Retorna:
             Lista de links encontrados
         """
         try:
@@ -263,11 +263,11 @@ def scrape_and_summarize_website(url: str, max_words: int = 2000) -> str:
     """
     Faz scraping de um website usando Browserless e retorna um resumo do conteúdo.
     
-    Args:
+    Parâmetros:
         url: URL do website para fazer scraping
         max_words: Número máximo de palavras para resumir (default: 2000)
         
-    Returns:
+    Retorna:
         Resumo do conteúdo do website
     """
     return BrowserTools.scrape_and_summarize_website(url, max_words)

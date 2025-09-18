@@ -28,10 +28,10 @@ class YfinanceTools:
         """
         Obtém o nome completo da empresa pelo símbolo.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação (ex: PETR4.SA)
             
-        Returns:
+        Retorna:
             Nome da empresa
         """
         try:
@@ -56,10 +56,10 @@ Indústria: {industry}"""
         """
         Obtém informações gerais da empresa.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação
             
-        Returns:
+        Retorna:
             Informações formatadas da empresa
         """
         try:
@@ -103,11 +103,11 @@ DESCRIÇÃO:
         """
         Obtém histórico de dividendos da empresa.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação
             period: Período para análise (1y, 2y, 5y, max)
             
-        Returns:
+        Retorna:
             Histórico de dividendos formatado
         """
         try:
@@ -184,10 +184,10 @@ DESCRIÇÃO:
         """
         Obtém declarações financeiras da empresa.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação
             
-        Returns:
+        Retorna:
             Declarações financeiras formatadas
         """
         try:
@@ -239,10 +239,10 @@ DESCRIÇÃO:
         """
         Obtém balanços patrimoniais da empresa.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação
             
-        Returns:
+        Retorna:
             Balanços formatados
         """
         try:
@@ -307,10 +307,10 @@ DESCRIÇÃO:
         """
         Obtém demonstração de fluxo de caixa da empresa.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação
             
-        Returns:
+        Retorna:
             Fluxo de caixa formatado
         """
         try:
@@ -364,12 +364,12 @@ DESCRIÇÃO:
         """
         Obtém cotações recentes da ação.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação
             period: Período (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max)
             limit_display: Limite de registros para exibir (padrão: 10)
             
-        Returns:
+        Retorna:
             Cotações formatadas
         """
         try:
@@ -425,12 +425,12 @@ DESCRIÇÃO:
         """
         Obtém preços históricos de fechamento para cálculos técnicos.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação
             period: Período dos dados (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max)
             max_points: Número máximo de pontos retornados (padrão: 250)
             
-        Returns:
+        Retorna:
             Lista com preços de fechamento (valores float)
         """
         try:
@@ -483,10 +483,10 @@ DESCRIÇÃO:
         Obtém dados financeiros usando MCP como fonte primária, 
         com fallback para Alpha Vantage tradicional e Yahoo Finance.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação (ex: PETR4.SA)
             
-        Returns:
+        Retorna:
             Dicionário com dados financeiros aprimorados via MCP
         """
         logger.info(f"Coletando dados financeiros via MCP para {symbol}")
@@ -562,10 +562,10 @@ DESCRIÇÃO:
         """
         Compara dados entre Yahoo Finance e Alpha Vantage para validação.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação
             
-        Returns:
+        Retorna:
             Comparação entre as fontes de dados
         """
         if not alpha_vantage_manager.is_available():
@@ -631,10 +631,10 @@ DESCRIÇÃO:
         """
         Gera resumo financeiro combinando Yahoo Finance, MCP e Alpha Vantage.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação
             
-        Returns:
+        Retorna:
             Resumo textual com dados de todas as fontes disponíveis
         """
         enhanced_data = YfinanceTools.get_enhanced_financial_data_with_mcp(symbol)
@@ -778,10 +778,10 @@ def obter_nome_empresa(symbol: str) -> str:
     """
     Obtém o nome da empresa a partir do símbolo da ação.
     
-    Args:
+    Parâmetros:
         symbol: Símbolo da ação (ex: PETR4.SA)
         
-    Returns:
+    Retorna:
         Nome da empresa
     """
     return YfinanceTools.obter_nome_empresa(symbol)
@@ -792,10 +792,10 @@ def obter_informacoes_empresa(symbol: str) -> str:
     """
     Obtém informações detalhadas da empresa usando dados integrados.
     
-    Args:
+    Parâmetros:
         symbol: Símbolo da ação (ex: PETR4.SA)
         
-    Returns:
+    Retorna:
         Informações detalhadas da empresa
     """
     return YfinanceTools.obter_informacoes_empresa(symbol)
@@ -806,10 +806,10 @@ def obter_dividendos_empresa(symbol: str) -> str:
     """
     Obtém histórico de dividendos da empresa.
     
-    Args:
+    Parâmetros:
         symbol: Símbolo da ação (ex: PETR4.SA)
         
-    Returns:
+    Retorna:
         Histórico de dividendos formatado
     """
     return YfinanceTools.obter_dividendos_empresa(symbol)
@@ -820,10 +820,10 @@ def obter_declaracoes_financeiras_empresa(symbol: str) -> str:
     """
     Obtém demonstrações de resultados (DRE) da empresa.
     
-    Args:
+    Parâmetros:
         symbol: Símbolo da ação (ex: PETR4.SA)
         
-    Returns:
+    Retorna:
         Demonstrações financeiras formatadas
     """
     return YfinanceTools.obter_declaracoes_financeiras_empresa(symbol)
@@ -834,10 +834,10 @@ def obter_balancos_financeiros_empresa(symbol: str) -> str:
     """
     Obtém balanços patrimoniais da empresa.
     
-    Args:
+    Parâmetros:
         symbol: Símbolo da ação (ex: PETR4.SA)
         
-    Returns:
+    Retorna:
         Balanços patrimoniais formatados
     """
     return YfinanceTools.obter_balancos_financeiros_empresa(symbol)
@@ -848,10 +848,10 @@ def obter_fluxo_caixa_empresa(symbol: str) -> str:
     """
     Obtém demonstrações de fluxo de caixa da empresa.
     
-    Args:
+    Parâmetros:
         symbol: Símbolo da ação (ex: PETR4.SA)
         
-    Returns:
+    Retorna:
         Fluxo de caixa formatado
     """
     return YfinanceTools.obter_fluxo_caixa_empresa(symbol)
@@ -862,11 +862,11 @@ def obter_ultimas_cotacoes(symbol: str, period: str = "1mo") -> str:
     """
     Obtém as últimas cotações da ação.
     
-    Args:
+    Parâmetros:
         symbol: Símbolo da ação (ex: PETR4.SA)
         period: Período das cotações (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max)
         
-    Returns:
+    Retorna:
         Cotações formatadas
     """
     return YfinanceTools.obter_ultimas_cotacoes(symbol, period)
@@ -877,12 +877,12 @@ def obter_precos_historicos(symbol: str, period: str = "6mo", max_points: int = 
     """
     Obtém lista de preços históricos de fechamento para cálculos técnicos (médias móveis, RSI, etc.).
     
-    Args:
+    Parâmetros:
         symbol: Símbolo da ação (ex: PETR4.SA)
         period: Período dos dados (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max)
         max_points: Número máximo de pontos retornados (padrão: 250)
         
-    Returns:
+    Retorna:
         Lista com preços de fechamento para cálculos técnicos
     """
     return YfinanceTools.obter_precos_historicos(symbol, period, max_points)

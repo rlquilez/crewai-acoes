@@ -24,11 +24,11 @@ class SearchTools:
         """
         Busca na internet usando SearXNG ou fallback para Google Custom Search API.
         
-        Args:
+        Parâmetros:
             query: Termo de busca
             num_results: Número de resultados desejados
             
-        Returns:
+        Retorna:
             Resultados da busca formatados
         """
         try:
@@ -56,11 +56,11 @@ class SearchTools:
         """
         Realiza busca usando SearXNG.
         
-        Args:
+        Parâmetros:
             query: Termo de busca
             num_results: Número de resultados
             
-        Returns:
+        Retorna:
             Resultados formatados
         """
         try:
@@ -114,13 +114,13 @@ class SearchTools:
         """
         Realiza busca usando Google Custom Search API (fallback).
         
-        Args:
+        Parâmetros:
             query: Termo de busca
             num_results: Número de resultados
             api_key: Chave da API Google
             search_engine_id: ID do motor de busca
             
-        Returns:
+        Retorna:
             Resultados formatados
         """
         try:
@@ -184,12 +184,12 @@ class SearchTools:
         """
         Busca notícias recentes relacionadas ao termo.
         
-        Args:
+        Parâmetros:
             query: Termo de busca
             days_back: Número de dias para buscar notícias
             language: Idioma das notícias
             
-        Returns:
+        Retorna:
             Notícias encontradas formatadas
         """
         try:
@@ -237,11 +237,11 @@ class SearchTools:
         """
         Busca notícias financeiras específicas de uma empresa/ação.
         
-        Args:
+        Parâmetros:
             symbol: Símbolo da ação (ex: PETR4.SA)
             days_back: Número de dias para buscar
             
-        Returns:
+        Retorna:
             Notícias financeiras formatadas
         """
         try:
@@ -315,11 +315,11 @@ def search_internet(query: str, num_results: int = 5) -> str:
     """
     Busca na internet usando SearXNG ou fallback para Google Custom Search API.
     
-    Args:
+    Parâmetros:
         query: Termo de busca
         num_results: Número de resultados desejados (default: 5)
         
-    Returns:
+    Retorna:
         Resultados da busca formatados
     """
     return SearchTools.search_internet(query, num_results)
@@ -330,11 +330,11 @@ def search_news(query: str, num_results: int = 5) -> str:
     """
     Busca notícias na internet usando SearXNG ou Google News.
     
-    Args:
+    Parâmetros:
         query: Termo de busca para notícias
         num_results: Número de resultados desejados (default: 5)
         
-    Returns:
+    Retorna:
         Notícias encontradas formatadas
     """
     return SearchTools.search_news(query, num_results)
@@ -345,11 +345,11 @@ def search_financial_news(query: str, num_results: int = 5) -> str:
     """
     Busca notícias financeiras específicas usando NewsAPI ou SearXNG.
     
-    Args:
+    Parâmetros:
         query: Termo de busca para notícias financeiras
         num_results: Número de resultados desejados (default: 5)
         
-    Returns:
+    Retorna:
         Notícias financeiras encontradas formatadas
     """
     return SearchTools.search_financial_news(query, num_results)

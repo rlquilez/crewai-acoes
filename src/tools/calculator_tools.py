@@ -19,10 +19,10 @@ class CalculatorTools:
         """
         Avalia expressões matemáticas simples de forma segura.
         
-        Args:
+        Parâmetros:
             expression: Expressão matemática como string
             
-        Returns:
+        Retorna:
             Resultado do cálculo como string
         """
         try:
@@ -50,11 +50,11 @@ class CalculatorTools:
         """
         Calcula a variação percentual entre dois valores.
         
-        Args:
+        Parâmetros:
             old_value: Valor antigo
             new_value: Valor novo
             
-        Returns:
+        Retorna:
             Variação percentual formatada
         """
         try:
@@ -74,12 +74,12 @@ class CalculatorTools:
         """
         Calcula o retorno composto anualizado.
         
-        Args:
+        Parâmetros:
             initial_value: Valor inicial
             final_value: Valor final
             periods: Número de períodos (anos)
             
-        Returns:
+        Retorna:
             Retorno composto anualizado
         """
         try:
@@ -99,10 +99,10 @@ class CalculatorTools:
         """
         Calcula a volatilidade de uma série de preços.
         
-        Args:
+        Parâmetros:
             prices: Lista de preços
             
-        Returns:
+        Retorna:
             Volatilidade formatada
         """
         try:
@@ -127,11 +127,11 @@ class CalculatorTools:
         """
         Calcula o Relative Strength Index (RSI).
         
-        Args:
+        Parâmetros:
             prices: Lista de preços
             period: Período para cálculo (padrão: 14)
             
-        Returns:
+        Retorna:
             RSI formatado
         """
         try:
@@ -178,11 +178,11 @@ class CalculatorTools:
         """
         Calcula a média móvel simples.
         
-        Args:
+        Parâmetros:
             prices: Lista de preços
             period: Período para média móvel
             
-        Returns:
+        Retorna:
             Média móvel formatada
         """
         try:
@@ -206,11 +206,11 @@ class CalculatorTools:
         """
         Identifica níveis de suporte e resistência.
         
-        Args:
+        Parâmetros:
             prices: Lista de preços
             window: Janela para análise
             
-        Returns:
+        Retorna:
             Níveis de suporte e resistência
         """
         try:
@@ -242,10 +242,10 @@ def calculate(expression: str) -> str:
     """
     Avalia expressões matemáticas simples de forma segura.
     
-    Args:
+    Parâmetros:
         expression: Expressão matemática para calcular
         
-    Returns:
+    Retorna:
         Resultado do cálculo
     """
     return CalculatorTools.calculate(expression)
@@ -256,11 +256,11 @@ def calculate_percentage_change(value_from: float, value_to: float) -> str:
     """
     Calcula a variação percentual entre dois valores.
     
-    Args:
+    Parâmetros:
         value_from: Valor inicial
         value_to: Valor final
         
-    Returns:
+    Retorna:
         Variação percentual formatada
     """
     return CalculatorTools.calculate_percentage_change(value_from, value_to)
@@ -271,12 +271,12 @@ def calculate_compound_return(initial_value: float, final_value: float, periods:
     """
     Calcula o retorno composto anualizado.
     
-    Args:
+    Parâmetros:
         initial_value: Valor inicial
         final_value: Valor final
         periods: Número de períodos
         
-    Returns:
+    Retorna:
         Retorno composto anualizado formatado
     """
     return CalculatorTools.calculate_compound_return(initial_value, final_value, periods)
@@ -287,11 +287,11 @@ def calculate_volatility(prices: List[float], window: int = 20) -> str:
     """
     Calcula a volatilidade de uma série de preços.
     
-    Args:
+    Parâmetros:
         prices: Lista de preços
         window: Janela para cálculo (default: 20)
         
-    Returns:
+    Retorna:
         Volatilidade calculada formatada
     """
     return CalculatorTools.calculate_volatility(prices, window)
@@ -302,11 +302,11 @@ def calculate_rsi(prices: List[float], window: int = 14) -> str:
     """
     Calcula o RSI (Relative Strength Index).
     
-    Args:
+    Parâmetros:
         prices: Lista de preços
         window: Período para cálculo (default: 14)
         
-    Returns:
+    Retorna:
         RSI calculado formatado
     """
     return CalculatorTools.calculate_rsi(prices, window)
@@ -317,11 +317,11 @@ def calculate_moving_average(prices: List[float], window: int = 20) -> str:
     """
     Calcula a média móvel de uma série de preços.
     
-    Args:
+    Parâmetros:
         prices: Lista de preços
         window: Período da média móvel (default: 20)
         
-    Returns:
+    Retorna:
         Média móvel calculada formatada
     """
     return CalculatorTools.calculate_moving_average(prices, window)
@@ -332,11 +332,11 @@ def calculate_support_resistance(prices: List[float], window: int = 20) -> str:
     """
     Calcula níveis de suporte e resistência baseados em preços recentes.
     
-    Args:
+    Parâmetros:
         prices: Lista de preços
         window: Período para análise (default: 20)
         
-    Returns:
+    Retorna:
         Níveis de suporte e resistência formatados
     """
     return CalculatorTools.calculate_support_resistance(prices, window)
