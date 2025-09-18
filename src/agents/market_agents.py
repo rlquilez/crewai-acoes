@@ -289,9 +289,20 @@ class MarketAgents:
 
     def _log_agent_step(self, step):
         """Callback para logging dos passos dos agentes."""
-        print(f"[{step.agent_role}] {step.action}: {step.action_input}")
-        if step.observation:
-            print(f"[{step.agent_role}] Observação: {step.observation[:200]}...")
+        try:
+            # Verifica se o objeto step possui os atributos necessários
+            if hasattr(step, 'agent_role') and hasattr(step, 'action') and hasattr(step, 'action_input'):
+                print(f"[{step.agent_role}] {step.action}: {step.action_input}")
+                if hasattr(step, 'observation') and step.observation:
+                    print(f"[{step.agent_role}] Observação: {step.observation[:200]}...")
+            else:
+                # Log alternativo para objetos que não têm a estrutura esperada
+                print(f"[AGENT STEP] Tipo: {type(step).__name__}")
+                if hasattr(step, '__dict__'):
+                    print(f"[AGENT STEP] Atributos: {list(step.__dict__.keys())}")
+        except Exception as e:
+            logger.debug(f"Erro no callback de step: {e}")
+            # Continua execução sem interromper o agente
 
 
 # Função de conveniência para criar instância
