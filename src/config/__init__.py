@@ -5,7 +5,7 @@ Gerencia todos os provedores: LLM, Search, Financial Data.
 
 import os
 import logging
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Union
 from dataclasses import dataclass
 
 # Importa gerenciadores específicos
@@ -90,7 +90,7 @@ class ConfigManager:
         if self.alpha_vantage_manager.config.premium:
             logger.info("Alpha Vantage Premium: enabled")
     
-    def get_llm(self, provider: Optional[LLMProvider] = None):
+    def get_llm(self, provider: Optional[Union[LLMProvider, str]] = None):
         """Obtém instância de LLM configurada"""
         return self.llm_manager.get_crewai_llm(provider)
     
@@ -199,7 +199,7 @@ class ConfigManager:
 config_manager = ConfigManager()
 
 # Funções de conveniência para acesso global
-def get_llm(provider: Optional[LLMProvider] = None):
+def get_llm(provider: Optional[Union[LLMProvider, str]] = None):
     """Obtém LLM configurado"""
     return config_manager.get_llm(provider)
 

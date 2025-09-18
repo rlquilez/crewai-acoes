@@ -273,7 +273,7 @@ def main():
                        default='quick', help='Tipo de análise')
     parser.add_argument('--batch', nargs='*', help='Análise em lote (lista de símbolos)')
     parser.add_argument('--list-symbols', action='store_true', help='Lista símbolos populares')
-    parser.add_argument('--model', default='claude-3-sonnet-20240229', help='Modelo LLM')
+    parser.add_argument('--model', default=None, help='Provedor LLM (openai, anthropic, deepseek, grok, ollama)')
     
     args = parser.parse_args()
     

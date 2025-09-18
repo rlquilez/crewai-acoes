@@ -1,6 +1,34 @@
 """
-Agentes especializados para análise de mercado financeiro.
+Agentes especializados para análise de mercado de ações.
+Cada agente possui expertise específica e trabalha em colaboração.
 """
+
+from crewai import Agent
+from typing import Optional, Union
+from src.config import get_llm
+from src.config.llm_config import LLMProvider
+from src.tools.browser_tools import BrowserTools
+from src.tools.search_tools import SearchTools
+from src.tools.calculator_tools import CalculatorTools
+from src.tools.yfinance_tools import YfinanceTools
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+class MarketAgents:
+    """Classe para criar e gerenciar agentes de análise de mercado."""
+    
+    def __init__(self, llm_provider: Optional[Union[LLMProvider, str]] = None):
+        """
+        Inicializa a classe de agentes.
+        
+        Args:
+            llm_provider: Provedor de LLM a ser usado (padrão: configurado em DEFAULT_LLM)
+        """
+        self.llm = get_llm(llm_provider)
+        self.llm_provider = llm_provider
 
 from crewai import Agent
 from typing import List, Optional

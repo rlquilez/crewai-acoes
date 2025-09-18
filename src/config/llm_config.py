@@ -4,7 +4,7 @@ Suporta OpenAI, Anthropic, Deepseek, Grok e Ollama.
 """
 
 import os
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Union
 from dataclasses import dataclass
 from enum import Enum
 import logging
@@ -18,6 +18,23 @@ class LLMProvider(Enum):
     DEEPSEEK = "deepseek"
     GROK = "grok"
     OLLAMA = "ollama"
+    
+    @classmethod
+    def from_string(cls, value: str) -> 'LLMProvider':
+        """Converte string para enum LLMProvider"""
+        if isinstance(value, cls):
+            return value
+        
+        # Tenta encontrar pelo valor
+        for provider in cls:
+            if provider.value == value.lower():
+                return provider
+        
+        # Tenta encontrar pelo nome
+        try:
+            return cls[value.upper()]
+        except KeyError:
+            raise ValueError(f"Provedor '{value}' não é suportado. Provedores disponíveis: {', '.join([p.value for p in cls])}")
 
 @dataclass
 class LLMConfig:
@@ -107,10 +124,16 @@ class LLMConfigManager:
             timeout=timeout
         )
     
-    def get_config(self, provider: Optional[LLMProvider] = None) -> LLMConfig:
+    def get_config(self, provider: Optional[Union[LLMProvider, str]] = None) -> LLMConfig:
         """Obtém configuração para um provedor específico ou o padrão"""
         if provider is None:
             provider = self.default_provider
+        elif isinstance(provider, str):
+            try:
+                provider = LLMProvider.from_string(provider)
+            except ValueError as e:
+                logger.error(f"Erro ao converter provider '{provider}': {e}")
+                provider = self.default_provider
         
         if provider not in self.configs:
             raise ValueError(f"Provedor {provider.value} não está configurado ou disponível")
@@ -125,7 +148,7 @@ class LLMConfigManager:
         """Verifica se um provedor está disponível"""
         return provider in self.configs
     
-    def get_crewai_llm(self, provider: Optional[LLMProvider] = None):
+    def get_crewai_llm(self, provider: Optional[Union[LLMProvider, str]] = None):
         """Retorna instância de LLM configurada para CrewAI"""
         config = self.get_config(provider)
         
