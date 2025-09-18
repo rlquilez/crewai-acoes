@@ -54,7 +54,7 @@ class LLMConfigManager:
     DEFAULT_MODELS = {
         LLMProvider.OPENAI: "gpt-4o",  # Último modelo OpenAI
         LLMProvider.ANTHROPIC: "claude-3-5-sonnet-20241022",  # Último Claude
-        LLMProvider.DEEPSEEK: "deepseek/deepseek-reasoner",  # Modelo Reasoner
+        LLMProvider.DEEPSEEK: "deepseek-reasoner",  # Modelo Reasoner (será corrigido automaticamente)
         LLMProvider.GROK: "grok-2-1212",  # Último Grok
         LLMProvider.OLLAMA: "llama3.2:latest"  # Modelo padrão Ollama
     }
@@ -76,9 +76,12 @@ class LLMConfigManager:
     def _get_default_provider(self) -> LLMProvider:
         """Determina o provedor padrão baseado nas variáveis de ambiente"""
         default_llm = os.getenv('DEFAULT_LLM', 'openai').lower()
+        logger.info(f"DEFAULT_LLM encontrado: {default_llm}")
         
         try:
-            return LLMProvider(default_llm)
+            provider = LLMProvider(default_llm)
+            logger.info(f"Provedor padrão configurado: {provider.value}")
+            return provider
         except ValueError:
             logger.warning(f"Provedor '{default_llm}' não suportado. Usando OpenAI como padrão.")
             return LLMProvider.OPENAI
@@ -122,7 +125,7 @@ class LLMConfigManager:
         if max_tokens:
             max_tokens = int(max_tokens)
         
-        return LLMConfig(
+        config = LLMConfig(
             provider=provider,
             model=model,
             api_key=api_key,
@@ -131,22 +134,35 @@ class LLMConfigManager:
             max_tokens=max_tokens,
             timeout=timeout
         )
+        
+        logger.info(f"Configuração criada para {provider.value}: model={config.model}, api_key={'***' if config.api_key else 'None'}")
+        return config
     
     def get_config(self, provider: Optional[Union[LLMProvider, str]] = None) -> LLMConfig:
         """Obtém configuração para um provedor específico ou o padrão"""
         if provider is None:
             provider = self.default_provider
+            logger.info(f"Usando provedor padrão: {provider.value}")
         elif isinstance(provider, str):
             try:
                 provider = LLMProvider.from_string(provider)
+                logger.info(f"Provedor convertido de string: {provider.value}")
             except ValueError as e:
                 logger.error(f"Erro ao converter provider '{provider}': {e}")
                 provider = self.default_provider
+                logger.warning(f"Usando provedor padrão como fallback: {provider.value}")
+        
+        logger.info(f"Tentando obter configuração para provedor: {provider.value}")
+        logger.info(f"Provedores configurados: {[p.value for p in self.configs.keys()]}")
         
         if provider not in self.configs:
-            raise ValueError(f"Provedor {provider.value} não está configurado ou disponível")
+            error_msg = f"Provedor {provider.value} não está configurado ou disponível"
+            logger.error(error_msg)
+            raise ValueError(error_msg)
         
-        return self.configs[provider]
+        config = self.configs[provider]
+        logger.info(f"Configuração obtida para {provider.value}: model={config.model}")
+        return config
     
     def get_available_providers(self) -> list[LLMProvider]:
         """Retorna lista de provedores disponíveis"""
@@ -209,7 +225,11 @@ class LLMConfigManager:
             
             elif config.provider == LLMProvider.DEEPSEEK:
                 from langchain_openai import ChatOpenAI
-                return ChatOpenAI(
+                logger.info(f"Criando LLM Deepseek com modelo: {validated_model}")
+                logger.info(f"Base URL: {config.base_url}")
+                logger.info(f"API Key presente: {'***' if config.api_key else 'NÃO'}")
+                
+                llm = ChatOpenAI(
                     model=validated_model,
                     api_key=config.api_key,
                     base_url=config.base_url,
@@ -217,6 +237,8 @@ class LLMConfigManager:
                     max_tokens=config.max_tokens,
                     timeout=config.timeout
                 )
+                logger.info(f"LLM Deepseek criado com sucesso: {type(llm).__name__}")
+                return llm
             
             elif config.provider == LLMProvider.GROK:
                 from langchain_openai import ChatOpenAI
