@@ -7,7 +7,7 @@ import json
 import os
 from bs4 import BeautifulSoup
 from typing import Dict, Any, Optional
-from crewai.tools import BaseTool
+from crewai.tools import BaseTool, tool
 from pydantic import BaseModel, Field
 import time
 import logging
@@ -255,3 +255,19 @@ class BrowserTools:
         except Exception as e:
             logger.error(f"Erro ao extrair links de {url}: {e}")
             return []
+
+
+# Ferramentas decoradas para CrewAI
+@tool
+def scrape_and_summarize_website(url: str, max_words: int = 2000) -> str:
+    """
+    Faz scraping de um website usando Browserless e retorna um resumo do conteúdo.
+    
+    Args:
+        url: URL do website para fazer scraping
+        max_words: Número máximo de palavras para resumir (default: 2000)
+        
+    Returns:
+        Resumo do conteúdo do website
+    """
+    return BrowserTools.scrape_and_summarize_website(url, max_words)

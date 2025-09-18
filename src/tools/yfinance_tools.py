@@ -7,6 +7,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional, List
 import logging
+from crewai.tools import tool
 
 # Importa integração com Alpha Vantage e MCP
 import sys
@@ -713,3 +714,103 @@ DESCRIÇÃO:
             return f"{value/1e3:.2f}K"
         else:
             return f"{value:,.0f}"
+
+
+# Ferramentas decoradas para CrewAI
+@tool
+def obter_nome_empresa(symbol: str) -> str:
+    """
+    Obtém o nome da empresa a partir do símbolo da ação.
+    
+    Args:
+        symbol: Símbolo da ação (ex: PETR4.SA)
+        
+    Returns:
+        Nome da empresa
+    """
+    return YfinanceTools.obter_nome_empresa(symbol)
+
+
+@tool
+def obter_informacoes_empresa(symbol: str) -> str:
+    """
+    Obtém informações detalhadas da empresa usando dados integrados.
+    
+    Args:
+        symbol: Símbolo da ação (ex: PETR4.SA)
+        
+    Returns:
+        Informações detalhadas da empresa
+    """
+    return YfinanceTools.obter_informacoes_empresa(symbol)
+
+
+@tool
+def obter_dividendos_empresa(symbol: str) -> str:
+    """
+    Obtém histórico de dividendos da empresa.
+    
+    Args:
+        symbol: Símbolo da ação (ex: PETR4.SA)
+        
+    Returns:
+        Histórico de dividendos formatado
+    """
+    return YfinanceTools.obter_dividendos_empresa(symbol)
+
+
+@tool
+def obter_declaracoes_financeiras_empresa(symbol: str) -> str:
+    """
+    Obtém demonstrações de resultados (DRE) da empresa.
+    
+    Args:
+        symbol: Símbolo da ação (ex: PETR4.SA)
+        
+    Returns:
+        Demonstrações financeiras formatadas
+    """
+    return YfinanceTools.obter_declaracoes_financeiras_empresa(symbol)
+
+
+@tool
+def obter_balancos_financeiros_empresa(symbol: str) -> str:
+    """
+    Obtém balanços patrimoniais da empresa.
+    
+    Args:
+        symbol: Símbolo da ação (ex: PETR4.SA)
+        
+    Returns:
+        Balanços patrimoniais formatados
+    """
+    return YfinanceTools.obter_balancos_financeiros_empresa(symbol)
+
+
+@tool
+def obter_fluxo_caixa_empresa(symbol: str) -> str:
+    """
+    Obtém demonstrações de fluxo de caixa da empresa.
+    
+    Args:
+        symbol: Símbolo da ação (ex: PETR4.SA)
+        
+    Returns:
+        Fluxo de caixa formatado
+    """
+    return YfinanceTools.obter_fluxo_caixa_empresa(symbol)
+
+
+@tool
+def obter_ultimas_cotacoes(symbol: str, period: str = "1mo") -> str:
+    """
+    Obtém as últimas cotações da ação.
+    
+    Args:
+        symbol: Símbolo da ação (ex: PETR4.SA)
+        period: Período das cotações (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max)
+        
+    Returns:
+        Cotações formatadas
+    """
+    return YfinanceTools.obter_ultimas_cotacoes(symbol, period)

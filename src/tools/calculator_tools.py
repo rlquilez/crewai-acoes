@@ -6,6 +6,7 @@ import math
 import numpy as np
 from typing import Union, List, Dict, Any
 import logging
+from crewai.tools import tool
 
 logger = logging.getLogger(__name__)
 
@@ -233,3 +234,109 @@ Preço atual: {current_price:.2f}"""
         except Exception as e:
             logger.error(f"Erro no cálculo de suporte/resistência: {e}")
             return f"Erro no cálculo: {str(e)}"
+
+
+# Ferramentas decoradas para CrewAI
+@tool
+def calculate(expression: str) -> str:
+    """
+    Avalia expressões matemáticas simples de forma segura.
+    
+    Args:
+        expression: Expressão matemática para calcular
+        
+    Returns:
+        Resultado do cálculo
+    """
+    return CalculatorTools.calculate(expression)
+
+
+@tool
+def calculate_percentage_change(value_from: float, value_to: float) -> str:
+    """
+    Calcula a variação percentual entre dois valores.
+    
+    Args:
+        value_from: Valor inicial
+        value_to: Valor final
+        
+    Returns:
+        Variação percentual formatada
+    """
+    return CalculatorTools.calculate_percentage_change(value_from, value_to)
+
+
+@tool
+def calculate_compound_return(initial_value: float, final_value: float, periods: int) -> str:
+    """
+    Calcula o retorno composto anualizado.
+    
+    Args:
+        initial_value: Valor inicial
+        final_value: Valor final
+        periods: Número de períodos
+        
+    Returns:
+        Retorno composto anualizado formatado
+    """
+    return CalculatorTools.calculate_compound_return(initial_value, final_value, periods)
+
+
+@tool
+def calculate_volatility(prices: List[float], window: int = 20) -> str:
+    """
+    Calcula a volatilidade de uma série de preços.
+    
+    Args:
+        prices: Lista de preços
+        window: Janela para cálculo (default: 20)
+        
+    Returns:
+        Volatilidade calculada formatada
+    """
+    return CalculatorTools.calculate_volatility(prices, window)
+
+
+@tool
+def calculate_rsi(prices: List[float], window: int = 14) -> str:
+    """
+    Calcula o RSI (Relative Strength Index).
+    
+    Args:
+        prices: Lista de preços
+        window: Período para cálculo (default: 14)
+        
+    Returns:
+        RSI calculado formatado
+    """
+    return CalculatorTools.calculate_rsi(prices, window)
+
+
+@tool
+def calculate_moving_average(prices: List[float], window: int = 20) -> str:
+    """
+    Calcula a média móvel de uma série de preços.
+    
+    Args:
+        prices: Lista de preços
+        window: Período da média móvel (default: 20)
+        
+    Returns:
+        Média móvel calculada formatada
+    """
+    return CalculatorTools.calculate_moving_average(prices, window)
+
+
+@tool
+def calculate_support_resistance(prices: List[float], window: int = 20) -> str:
+    """
+    Calcula níveis de suporte e resistência baseados em preços recentes.
+    
+    Args:
+        prices: Lista de preços
+        window: Período para análise (default: 20)
+        
+    Returns:
+        Níveis de suporte e resistência formatados
+    """
+    return CalculatorTools.calculate_support_resistance(prices, window)

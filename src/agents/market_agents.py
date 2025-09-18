@@ -4,13 +4,21 @@ Cada agente possui expertise específica e trabalha em colaboração.
 """
 
 from crewai import Agent
-from typing import Optional, Union
+from typing import Optional, Union, List
 from src.config import get_llm
 from src.config.llm_config import LLMProvider
-from src.tools.browser_tools import BrowserTools
-from src.tools.search_tools import SearchTools
-from src.tools.calculator_tools import CalculatorTools
-from src.tools.yfinance_tools import YfinanceTools
+from src.tools.browser_tools import scrape_and_summarize_website
+from src.tools.search_tools import search_internet, search_news, search_financial_news
+from src.tools.calculator_tools import (
+    calculate, calculate_percentage_change, calculate_compound_return,
+    calculate_volatility, calculate_rsi, calculate_moving_average,
+    calculate_support_resistance
+)
+from src.tools.yfinance_tools import (
+    obter_nome_empresa, obter_informacoes_empresa, obter_dividendos_empresa,
+    obter_declaracoes_financeiras_empresa, obter_balancos_financeiros_empresa,
+    obter_fluxo_caixa_empresa, obter_ultimas_cotacoes
+)
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
 
@@ -29,57 +37,27 @@ class MarketAgents:
         """
         self.llm = get_llm(llm_provider)
         self.llm_provider = llm_provider
-
-from crewai import Agent
-from typing import List, Optional
-import os
-
-# Importa as ferramentas do projeto
-import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from tools.browser_tools import BrowserTools
-from tools.search_tools import SearchTools
-from tools.calculator_tools import CalculatorTools
-from tools.yfinance_tools import YfinanceTools
-
-# Importa sistema de configuração dinâmica
-from config import get_llm, LLMProvider
-
-
-class MarketAgents:
-    """Classe para criar e gerenciar agentes de análise de mercado."""
-    
-    def __init__(self, llm_provider: Optional[LLMProvider] = None):
-        """
-        Inicializa a classe de agentes.
-        
-        Args:
-            llm_provider: Provedor de LLM a ser usado (padrão: configurado em DEFAULT_LLM)
-        """
-        self.llm = get_llm(llm_provider)
-        self.llm_provider = llm_provider
         
         # Lista de ferramentas comum a todos os agentes
         self.common_tools = [
-            BrowserTools.scrape_and_summarize_website,
-            SearchTools.search_internet,
-            SearchTools.search_news,
-            SearchTools.search_financial_news,
-            CalculatorTools.calculate,
-            CalculatorTools.calculate_percentage_change,
-            CalculatorTools.calculate_compound_return,
-            CalculatorTools.calculate_volatility,
-            CalculatorTools.calculate_rsi,
-            CalculatorTools.calculate_moving_average,
-            CalculatorTools.calculate_support_resistance,
-            YfinanceTools.obter_nome_empresa,
-            YfinanceTools.obter_informacoes_empresa,
-            YfinanceTools.obter_dividendos_empresa,
-            YfinanceTools.obter_declaracoes_financeiras_empresa,
-            YfinanceTools.obter_balancos_financeiros_empresa,
-            YfinanceTools.obter_fluxo_caixa_empresa,
-            YfinanceTools.obter_ultimas_cotacoes
+            scrape_and_summarize_website,
+            search_internet,
+            search_news,
+            search_financial_news,
+            calculate,
+            calculate_percentage_change,
+            calculate_compound_return,
+            calculate_volatility,
+            calculate_rsi,
+            calculate_moving_average,
+            calculate_support_resistance,
+            obter_nome_empresa,
+            obter_informacoes_empresa,
+            obter_dividendos_empresa,
+            obter_declaracoes_financeiras_empresa,
+            obter_balancos_financeiros_empresa,
+            obter_fluxo_caixa_empresa,
+            obter_ultimas_cotacoes
         ]
 
     def create_research_analyst(self) -> Agent:

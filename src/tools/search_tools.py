@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 import json
 import os
 from urllib.parse import quote, urljoin
+from crewai.tools import tool
 
 logger = logging.getLogger(__name__)
 
@@ -306,3 +307,49 @@ Nota: Configure as APIs do Google e News API para resultados reais.
 
 Nota: Configure a News API para notícias reais.
 """
+
+
+# Ferramentas decoradas para CrewAI
+@tool
+def search_internet(query: str, num_results: int = 5) -> str:
+    """
+    Busca na internet usando SearXNG ou fallback para Google Custom Search API.
+    
+    Args:
+        query: Termo de busca
+        num_results: Número de resultados desejados (default: 5)
+        
+    Returns:
+        Resultados da busca formatados
+    """
+    return SearchTools.search_internet(query, num_results)
+
+
+@tool
+def search_news(query: str, num_results: int = 5) -> str:
+    """
+    Busca notícias na internet usando SearXNG ou Google News.
+    
+    Args:
+        query: Termo de busca para notícias
+        num_results: Número de resultados desejados (default: 5)
+        
+    Returns:
+        Notícias encontradas formatadas
+    """
+    return SearchTools.search_news(query, num_results)
+
+
+@tool
+def search_financial_news(query: str, num_results: int = 5) -> str:
+    """
+    Busca notícias financeiras específicas usando NewsAPI ou SearXNG.
+    
+    Args:
+        query: Termo de busca para notícias financeiras
+        num_results: Número de resultados desejados (default: 5)
+        
+    Returns:
+        Notícias financeiras encontradas formatadas
+    """
+    return SearchTools.search_financial_news(query, num_results)
