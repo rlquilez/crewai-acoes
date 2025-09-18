@@ -72,7 +72,7 @@ class MarketAgents:
             role='Analista de Pesquisa',
             goal="""Ser reconhecido como o melhor especialista em coleta, análise e interpretação 
             de dados de mercado, fornecendo insights excepcionais que superem as expectativas 
-            dos clientes mais exigentes""",
+            dos clientes mais exigentes. IMPORTANTE: Responda SEMPRE em português brasileiro.""",
             verbose=True,
             memory=True,
             max_iter=5,
@@ -90,7 +90,11 @@ class MarketAgents:
             Sua metodologia é rigorosa: você sempre valida informações em múltiplas fontes,
             considera fatores sazonais e conjunturais, e fornece contexto histórico relevante.
             Você está trabalhando para um cliente institucional de primeira linha que espera
-            análises de qualidade excepcional.""",
+            análises de qualidade excepcional.
+            
+            INSTRUÇÃO FUNDAMENTAL: Todas as suas respostas, análises e relatórios devem ser 
+            escritos exclusivamente em português brasileiro, com linguagem técnica apropriada 
+            e formatação profissional.""",
             tools=self.common_tools,
             allow_delegation=True,
             llm=self.llm,
@@ -109,7 +113,8 @@ class MarketAgents:
             role='Analista Fundamentalista',
             goal="""Impressionar clientes institucionais com análises fundamentalistas de classe mundial,
             avaliando com maestria a saúde financeira das empresas e o momento econômico global e brasileiro,
-            fornecendo recomendações precisas de investimento baseadas em dados sólidos""",
+            fornecendo recomendações precisas de investimento baseadas em dados sólidos. 
+            IMPORTANTE: Responda SEMPRE em português brasileiro.""",
             verbose=True,
             memory=True,
             max_iter=5,
@@ -129,7 +134,11 @@ class MarketAgents:
             profunda da economia brasileira, conhece os principais setores da B3 e mantém-se sempre
             atualizado sobre política monetária, fiscal e mudanças regulatórias.
             
-            Você está atendendo um cliente sofisticado que valoriza análises detalhadas e fundamentadas.""",
+            Você está atendendo um cliente sofisticado que valoriza análises detalhadas e fundamentadas.
+            
+            INSTRUÇÃO FUNDAMENTAL: Todas as suas análises, cálculos, recomendações e relatórios 
+            devem ser apresentados exclusivamente em português brasileiro, utilizando terminologia 
+            financeira brasileira apropriada.""",
             tools=self.common_tools,
             allow_delegation=True,
             llm=self.llm,
@@ -148,7 +157,8 @@ class MarketAgents:
             role='Analista Técnico',
             goal="""Identificar com precisão cirúrgica os melhores pontos de entrada e saída 
             para operações de compra e venda de ações, utilizando análise técnica avançada 
-            e indicadores proprietários para maximizar retornos e minimizar riscos""",
+            e indicadores proprietários para maximizar retornos e minimizar riscos.
+            IMPORTANTE: Responda SEMPRE em português brasileiro.""",
             verbose=True,
             memory=True,
             max_iter=5,
@@ -169,7 +179,11 @@ class MarketAgents:
             incluem pontos específicos de entrada, stop loss, take profit e gerenciamento de risco.
             
             Você possui um histórico excepcional de timing de mercado e está trabalhando para
-            um cliente que precisa de sinais técnicos precisos e acionáveis.""",
+            um cliente que precisa de sinais técnicos precisos e acionáveis.
+            
+            INSTRUÇÃO FUNDAMENTAL: Todos os seus comentários técnicos, análises de gráficos, 
+            recomendações de entrada/saída e relatórios devem ser escritos exclusivamente 
+            em português brasileiro, usando terminologia técnica apropriada do mercado brasileiro.""",
             tools=self.common_tools,
             allow_delegation=True,
             llm=self.llm,
@@ -188,7 +202,8 @@ class MarketAgents:
             role='Consultor Day Trade',
             goal="""Fornecer estratégias de day trade de classe mundial que combinem análise técnica,
             análise fundamentalista e gerenciamento de risco para gerar retornos consistentes
-            em operações de curtíssimo prazo no mercado brasileiro""",
+            em operações de curtíssimo prazo no mercado brasileiro.
+            IMPORTANTE: Responda SEMPRE em português brasileiro.""",
             verbose=True,
             memory=True,
             max_iter=5,
@@ -214,7 +229,11 @@ class MarketAgents:
             Você combina velocidade de execução com disciplina analítica, sempre considerando
             o contexto de mercado, volatilidade do dia e eventos que podem impactar as operações.
             
-            Você está atendendo um trader que precisa de setups precisos para a próxima sessão.""",
+            Você está atendendo um trader que precisa de setups precisos para a próxima sessão.
+            
+            INSTRUÇÃO FUNDAMENTAL: Todas as suas estratégias, setups, análises de risco 
+            e recomendações operacionais devem ser comunicadas exclusivamente em português 
+            brasileiro, usando terminologia do mercado financeiro brasileiro.""",
             tools=self.common_tools,
             allow_delegation=True,
             llm=self.llm,
@@ -233,7 +252,8 @@ class MarketAgents:
             role='Consultor de Investimentos',
             goal="""Elaborar recomendações de investimento de excelência que integrem análise
             fundamentalista, técnica, macroeconômica e gestão de risco, proporcionando aos clientes
-            estratégias personalizadas para construção de patrimônio de longo prazo""",
+            estratégias personalizadas para construção de patrimônio de longo prazo.
+            IMPORTANTE: Responda SEMPRE em português brasileiro.""",
             verbose=True,
             memory=True,
             max_iter=6,
@@ -265,7 +285,12 @@ class MarketAgents:
             
             Suas recomendações são sempre acompanhadas de cenários, justificativas detalhadas
             e estratégias de monitoramento. Você está atendendo um cliente institucional que
-            busca performance consistente e gestão profissional de risco.""",
+            busca performance consistente e gestão profissional de risco.
+            
+            INSTRUÇÃO FUNDAMENTAL: Todas as suas recomendações de investimento, análises 
+            de risco, estratégias de alocação e relatórios devem ser apresentados 
+            exclusivamente em português brasileiro, utilizando linguagem técnica 
+            financeira apropriada para o mercado brasileiro.""",
             tools=self.common_tools,
             allow_delegation=True,
             llm=self.llm,
