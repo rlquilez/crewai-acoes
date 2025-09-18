@@ -1,0 +1,140 @@
+# SearXNG Configuration for CrewAI Stock Analysis
+# See https://docs.searxng.org/admin/settings.html for full documentation
+
+general:
+  debug: false
+  instance_name: "CrewAI Search Engine"
+  contact_url: false
+  enable_stats: false
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  autocomplete_min: 4
+  default_lang: "pt-BR"
+  ban_time_on_fail: 5
+  max_ban_time_on_fail: 120
+  formats:
+    - html
+    - json
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret_key: "change_me_to_a_random_string"  # Change in production
+  base_url: false
+  image_proxy: false
+  http_protocol_version: "1.0"
+  method: "POST"
+  default_http_headers:
+    X-Content-Type-Options: nosniff
+    X-XSS-Protection: 1; mode=block
+    X-Download-Options: noopen
+    X-Robots-Tag: noindex, nofollow
+    Referrer-Policy: no-referrer
+
+ui:
+  static_path: ""
+  static_use_hash: false
+  templates_path: ""
+  default_theme: simple
+  default_locale: "pt_BR"
+  theme_args:
+    simple_style: dark
+  results_on_new_tab: false
+  advanced_search: true
+  search_on_category_select: true
+  hotkeys: default
+
+# Enable engines relevant for financial data and news
+engines:
+  - name: bing
+    engine: bing
+    shortcut: bi
+    categories: general
+    disabled: false
+    timeout: 3.0
+
+  - name: bing news
+    engine: bing_news
+    shortcut: bin
+    categories: news
+    disabled: false
+    timeout: 3.0
+
+  - name: google
+    engine: google
+    shortcut: go
+    categories: general
+    disabled: false
+    timeout: 3.0
+
+  - name: google news
+    engine: google_news
+    shortcut: gon
+    categories: news
+    disabled: false
+    timeout: 3.0
+
+  - name: yahoo news
+    engine: yahoo_news
+    shortcut: yan
+    categories: news
+    disabled: false
+    timeout: 3.0
+
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: ddg
+    categories: general
+    disabled: false
+    timeout: 3.0
+
+  - name: startpage
+    engine: startpage
+    shortcut: sp
+    categories: general
+    disabled: false
+    timeout: 3.0
+
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+    categories: general
+    disabled: false
+    timeout: 3.0
+
+  - name: reddit
+    engine: reddit
+    shortcut: re
+    categories: general
+    disabled: false
+    timeout: 3.0
+
+categories_as_tabs:
+  general:
+    news:
+
+enabled_plugins:
+  - 'Hash plugin'
+  - 'Search on category select'
+  - 'Self Informations'
+  - 'Tracker URL remover'
+  - 'Unit converter plugin'
+
+disabled_plugins:
+  - 'Ahmia blacklist'
+  - 'Open Access DOI rewrite'
+  - 'Tor check plugin'
+
+# Rate limiting
+outgoing:
+  request_timeout: 2.0
+  max_request_timeout: 10.0
+  useragent_suffix: ""
+  pool_connections: 100
+  pool_maxsize: 10
+  enable_http2: false
+
+redis:
+  url: false

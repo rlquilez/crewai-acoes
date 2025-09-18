@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  crewai-stock-analysis:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      platforms:
+        - linux/amd64
+        - linux/arm64
+    image: crewai-stock-analysis:latest
+    container_name: crewai-stock-analysis
+    restart: unless-stopped
+    
+    # Variáveis de ambiente
+    environment:
+      - APP_ENV=production
+      - PYTHONUNBUFFERED=1
+      - REPORTS_DIR=/app/reports
+      - LOGS_DIR=/app/logs
+      - CACHE_DIR=/app/cache
+    
+    # Arquivo de ambiente (copie .env.example para .env e configure)
+    env_file:
+      - ../.env
+    
+    # Volumes para persistência
+    volumes:
+      - ../reports:/app/reports
+      - ../logs:/app/logs
+      - ../cache:/app/cache
+      - ../config:/app/config:ro  # Configurações como read-only
+    
+    # Limites de recursos
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    
+    # Comando para manter container rodando (modo interativo)
+    command: tail -f /dev/null
+    
+    # Labels para organização
+    labels:
+      - "com.crewai.app=stock-analysis"
+      - "com.crewai.version=1.0.0"
+      - "com.crewai.description=Sistema de análise de ações com CrewAI"
+
+  # Serviço Redis para cache (opcional)
+  redis:
+    image: redis:7-alpine
+    container_name: crewai-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    profiles:
+      - cache
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+        reservations:
+          memory: 64M
+          cpus: '0.1'
+
+  # Jupyter Lab para análise interativa (opcional)
+  jupyter:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.jupyter
+    container_name: crewai-jupyter
+    restart: unless-stopped
+    ports:
+      - "8888:8888"
+    volumes:
+      - ../notebooks:/home/crewai/notebooks
+      - ../reports:/home/crewai/reports
+      - ../src:/home/crewai/src:ro
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - JUPYTER_TOKEN=crewai2024
+    profiles:
+      - jupyter
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  default:
+    name: crewai-network
+    driver: bridge

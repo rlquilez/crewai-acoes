@@ -1,0 +1,43 @@
+# Dockerfile específico para Jupyter Lab
+FROM python:3.11-slim
+
+# Configura variáveis de ambiente
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    JUPYTER_ENABLE_LAB=yes
+
+# Instala dependências do sistema
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Cria usuário não-root
+RUN useradd --create-home --shell /bin/bash crewai
+
+# Instala dependências Python
+COPY requirements.txt /tmp/
+COPY docker/requirements-jupyter.txt /tmp/
+
+RUN pip install --no-cache-dir -r /tmp/requirements.txt && \
+    pip install --no-cache-dir -r /tmp/requirements-jupyter.txt
+
+# Configura Jupyter
+RUN jupyter lab --generate-config
+
+# Cria diretórios
+RUN mkdir -p /home/crewai/notebooks /home/crewai/reports /home/crewai/src
+
+# Define ownership
+RUN chown -R crewai:crewai /home/crewai
+
+# Muda para usuário
+USER crewai
+WORKDIR /home/crewai
+
+# Expõe porta
+EXPOSE 8888
+
+# Comando de inicialização
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root", "--NotebookApp.token=crewai2024"]

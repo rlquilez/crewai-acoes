@@ -1,0 +1,42 @@
+# Core CrewAI dependencies
+crewai==0.56.0
+crewai-tools==0.8.3
+
+# LLM providers
+anthropic==0.25.0
+openai==1.12.0
+
+# Financial data
+yfinance==0.2.28
+pandas==2.1.4
+numpy==1.24.3
+
+# Web scraping and search
+requests==2.31.0
+beautifulsoup4==4.12.2
+selenium==4.15.2
+google-search-results==2.4.2
+
+# SearXNG and Browserless integration
+pyppeteer==1.0.2
+playwright==1.40.0
+httpx==0.25.2
+aiohttp==3.9.1
+
+# Data visualization and analysis
+matplotlib==3.8.2
+plotly==5.17.0
+seaborn==0.13.0
+
+# Environment and configuration
+python-dotenv==1.0.0
+
+# Utilities
+pydantic==2.5.3
+langchain==0.1.4
+langchain-community==0.0.16
+
+# Development
+pytest==7.4.3
+black==23.12.1
+flake8==6.1.0

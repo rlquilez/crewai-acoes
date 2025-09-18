@@ -1,0 +1,36 @@
+# Multi-stage para reduzir tamanho da imagem de produção
+FROM python:3.11-slim as base
+
+# Metadados
+LABEL maintainer="CrewAI Stock Analysis Team"
+LABEL version="1.0.0"
+LABEL description="Sistema de análise de ações CrewAI - Produção"
+
+# Configurações base
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+WORKDIR /app
+
+# Copia apenas requirements para aproveitar cache do Docker
+COPY requirements.txt .
+
+# Instala dependências de produção
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copia código da aplicação
+COPY src/ ./src/
+COPY main.py .
+
+# Cria usuário não-root
+RUN useradd --create-home --shell /bin/bash crewai && \
+    mkdir -p reports logs cache && \
+    chown -R crewai:crewai /app
+
+USER crewai
+
+# Comando padrão
+ENTRYPOINT ["python", "main.py"]
+CMD ["--help"]
