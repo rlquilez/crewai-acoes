@@ -7,6 +7,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional, List
 import logging
+import pytz
 from crewai.tools import tool
 
 # Importa integração com Alpha Vantage e MCP
@@ -117,15 +118,22 @@ DESCRIÇÃO:
                 return f"Nenhum dividendo encontrado para {symbol} no período {period}"
             
             # Filtra por período
-            end_date = datetime.now()
+            end_date = pd.Timestamp.now()
             if period == "1y":
-                start_date = end_date - timedelta(days=365)
+                start_date = end_date - pd.Timedelta(days=365)
             elif period == "2y":
-                start_date = end_date - timedelta(days=730)
+                start_date = end_date - pd.Timedelta(days=730)
             elif period == "5y":
-                start_date = end_date - timedelta(days=1825)
+                start_date = end_date - pd.Timedelta(days=1825)
             else:
                 start_date = dividends.index.min()
+            
+            # Garantir que as datas tenham o mesmo timezone
+            if dividends.index.tz is not None:
+                if start_date.tz is None:
+                    start_date = start_date.tz_localize(dividends.index.tz)
+                else:
+                    start_date = start_date.tz_convert(dividends.index.tz)
             
             recent_dividends = dividends[dividends.index >= start_date]
             
@@ -149,8 +157,20 @@ DESCRIÇÃO:
             # Yield anualizado (aproximado)
             ticker_info = ticker.info
             current_price = ticker_info.get('currentPrice', 0)
-            if current_price > 0:
-                annual_yield = (total_dividends / len(period)) / current_price * 100
+            if current_price > 0 and dividend_count > 0:
+                # Calcular período em anos para o yield
+                if period == "1y":
+                    years = 1
+                elif period == "2y":
+                    years = 2
+                elif period == "5y":
+                    years = 5
+                else:
+                    # Para max, calcular baseado no período real
+                    days_diff = (recent_dividends.index.max() - recent_dividends.index.min()).days
+                    years = max(1, days_diff / 365.25)
+                
+                annual_yield = (total_dividends / years) / current_price * 100
                 result += f"Yield anualizado (aprox.): {annual_yield:.2f}%\n"
             
             return result
