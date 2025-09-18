@@ -360,13 +360,14 @@ DESCRIÇÃO:
             return f"Erro ao obter fluxo de caixa de {symbol}: {str(e)}"
 
     @staticmethod
-    def obter_ultimas_cotacoes(symbol: str, period: str = "1mo") -> str:
+    def obter_ultimas_cotacoes(symbol: str, period: str = "1mo", limit_display: int = 10) -> str:
         """
         Obtém cotações recentes da ação.
         
         Args:
             symbol: Símbolo da ação
             period: Período (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max)
+            limit_display: Limite de registros para exibir (padrão: 10)
             
         Returns:
             Cotações formatadas
@@ -380,8 +381,8 @@ DESCRIÇÃO:
             
             result = f"COTAÇÕES RECENTES - {symbol} (Período: {period})\n\n"
             
-            # Últimos 10 dias
-            recent_data = hist.tail(10)
+            # Últimos N dias (configurável)
+            recent_data = hist.tail(limit_display)
             
             result += "DATA\t\tABERTURA\tMÁXIMA\t\tMÍNIMA\t\tFECHAMENTO\tVOLUME\n"
             result += "-" * 80 + "\n"
@@ -418,6 +419,41 @@ DESCRIÇÃO:
         except Exception as e:
             logger.error(f"Erro ao obter cotações de {symbol}: {e}")
             return f"Erro ao obter cotações de {symbol}: {str(e)}"
+
+    @staticmethod
+    def obter_precos_historicos(symbol: str, period: str = "6mo", max_points: int = 250) -> List[float]:
+        """
+        Obtém preços históricos de fechamento para cálculos técnicos.
+        
+        Args:
+            symbol: Símbolo da ação
+            period: Período dos dados (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max)
+            max_points: Número máximo de pontos retornados (padrão: 250)
+            
+        Returns:
+            Lista com preços de fechamento (valores float)
+        """
+        try:
+            ticker = yf.Ticker(symbol)
+            hist = ticker.history(period=period)
+            
+            if hist.empty:
+                logger.warning(f"Dados históricos não disponíveis para {symbol}")
+                return []
+            
+            # Retorna preços de fechamento limitados pelo max_points
+            close_prices = hist['Close'].tolist()
+            
+            # Se temos mais dados que o solicitado, retorna os mais recentes
+            if len(close_prices) > max_points:
+                close_prices = close_prices[-max_points:]
+            
+            logger.info(f"Obtidos {len(close_prices)} preços históricos para {symbol}")
+            return close_prices
+            
+        except Exception as e:
+            logger.error(f"Erro ao obter preços históricos de {symbol}: {e}")
+            return []
 
     @staticmethod
     def _format_currency(value: Optional[float]) -> str:
@@ -834,3 +870,19 @@ def obter_ultimas_cotacoes(symbol: str, period: str = "1mo") -> str:
         Cotações formatadas
     """
     return YfinanceTools.obter_ultimas_cotacoes(symbol, period)
+
+
+@tool
+def obter_precos_historicos(symbol: str, period: str = "6mo", max_points: int = 250) -> List[float]:
+    """
+    Obtém lista de preços históricos de fechamento para cálculos técnicos (médias móveis, RSI, etc.).
+    
+    Args:
+        symbol: Símbolo da ação (ex: PETR4.SA)
+        period: Período dos dados (1d, 5d, 1mo, 3mo, 6mo, 1y, 2y, 5y, 10y, ytd, max)
+        max_points: Número máximo de pontos retornados (padrão: 250)
+        
+    Returns:
+        Lista com preços de fechamento para cálculos técnicos
+    """
+    return YfinanceTools.obter_precos_historicos(symbol, period, max_points)
