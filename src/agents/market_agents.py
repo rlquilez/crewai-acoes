@@ -68,7 +68,7 @@ class MarketAgents:
             Agent: Agente configurado para pesquisa de mercado
         """
         return Agent(
-            role='Analista Sênior de Pesquisa de Mercado',
+            role='Analista de Pesquisa',
             goal="""Ser reconhecido como o melhor especialista em coleta, análise e interpretação 
             de dados de mercado, fornecendo insights excepcionais que superem as expectativas 
             dos clientes mais exigentes""",
@@ -105,7 +105,7 @@ class MarketAgents:
             Agent: Agente configurado para análise fundamentalista
         """
         return Agent(
-            role='Analista Fundamentalista Especialista em Economia Brasileira',
+            role='Analista Fundamentalista',
             goal="""Impressionar clientes institucionais com análises fundamentalistas de classe mundial,
             avaliando com maestria a saúde financeira das empresas e o momento econômico global e brasileiro,
             fornecendo recomendações precisas de investimento baseadas em dados sólidos""",
@@ -144,7 +144,7 @@ class MarketAgents:
             Agent: Agente configurado para análise técnica
         """
         return Agent(
-            role='Analista Técnico Especialista em Mercado de Ações Brasileiro',
+            role='Analista Técnico',
             goal="""Identificar com precisão cirúrgica os melhores pontos de entrada e saída 
             para operações de compra e venda de ações, utilizando análise técnica avançada 
             e indicadores proprietários para maximizar retornos e minimizar riscos""",
@@ -184,7 +184,7 @@ class MarketAgents:
             Agent: Agente configurado para consultoria de day trade
         """
         return Agent(
-            role='Consultor Especialista em Day Trade de Alta Performance',
+            role='Consultor Day Trade',
             goal="""Fornecer estratégias de day trade de classe mundial que combinem análise técnica,
             análise fundamentalista e gerenciamento de risco para gerar retornos consistentes
             em operações de curtíssimo prazo no mercado brasileiro""",
@@ -229,7 +229,7 @@ class MarketAgents:
             Agent: Agente configurado para consultoria de investimentos
         """
         return Agent(
-            role='Consultor de Investimentos Sênior - Especialista em Mercado Brasileiro',
+            role='Consultor de Investimentos',
             goal="""Elaborar recomendações de investimento de excelência que integrem análise
             fundamentalista, técnica, macroeconômica e gestão de risco, proporcionando aos clientes
             estratégias personalizadas para construção de patrimônio de longo prazo""",
