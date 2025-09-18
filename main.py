@@ -20,12 +20,13 @@ from tasks.market_tasks import MarketTasks
 class StockAnalysisApp:
     """Aplicação principal para análise de ações."""
     
-    def __init__(self, llm_model: str = "claude-3-sonnet-20240229"):
+    def __init__(self, llm_provider: Optional[str] = None):
         """
         Inicializa a aplicação.
         
         Args:
-            llm_model: Modelo de LLM a ser usado
+            llm_provider: Provedor de LLM a ser usado (openai, anthropic, deepseek, grok, ollama)
+                         Se None, usa o provedor configurado em DEFAULT_LLM
         """
         # Carrega variáveis de ambiente
         load_dotenv()
@@ -34,15 +35,21 @@ class StockAnalysisApp:
         self._check_api_keys()
         
         # Inicializa componentes
-        self.market_agents = MarketAgents(llm_model)
+        self.market_agents = MarketAgents(llm_provider)
         self.market_tasks = MarketTasks()
         
         # Cria diretório de relatórios se não existir
         os.makedirs('reports', exist_ok=True)
         
+        # Determina qual provedor está sendo usado para display
+        from src.config.llm_config import llm_manager
+        current_provider = llm_manager.default_provider.value if llm_provider is None else llm_provider
+        current_config = llm_manager.get_config(llm_provider)
+        
         print("🚀 Sistema de Análise de Ações CrewAI inicializado!")
         print(f"📅 Data: {datetime.now().strftime('%d/%m/%Y %H:%M')}")
-        print(f"🤖 Modelo LLM: {llm_model}")
+        print(f"🤖 Provedor LLM: {current_provider}")
+        print(f"🧠 Modelo: {current_config.model}")
         print("-" * 60)
 
     def _check_api_keys(self):
