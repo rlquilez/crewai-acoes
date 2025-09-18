@@ -17,7 +17,7 @@ from src.tools.calculator_tools import (
 from src.tools.yfinance_tools import (
     obter_nome_empresa, obter_informacoes_empresa, obter_dividendos_empresa,
     obter_declaracoes_financeiras_empresa, obter_balancos_financeiros_empresa,
-    obter_fluxo_caixa_empresa, obter_ultimas_cotacoes
+    obter_fluxo_caixa_empresa, obter_ultimas_cotacoes, obter_precos_historicos
 )
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
@@ -57,7 +57,8 @@ class MarketAgents:
             obter_declaracoes_financeiras_empresa,
             obter_balancos_financeiros_empresa,
             obter_fluxo_caixa_empresa,
-            obter_ultimas_cotacoes
+            obter_ultimas_cotacoes,
+            obter_precos_historicos
         ]
 
     def create_research_analyst(self) -> Agent:
