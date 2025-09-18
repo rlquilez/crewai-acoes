@@ -54,7 +54,7 @@ class LLMConfigManager:
     DEFAULT_MODELS = {
         LLMProvider.OPENAI: "gpt-4o",  # Último modelo OpenAI
         LLMProvider.ANTHROPIC: "claude-3-5-sonnet-20241022",  # Último Claude
-        LLMProvider.DEEPSEEK: "deepseek-reasoner",  # Modelo Reasoner
+        LLMProvider.DEEPSEEK: "deepseek/deepseek-reasoner",  # Modelo Reasoner
         LLMProvider.GROK: "grok-2-1212",  # Último Grok
         LLMProvider.OLLAMA: "llama3.2:latest"  # Modelo padrão Ollama
     }
@@ -106,6 +106,14 @@ class LLMConfigManager:
         
         # Configurações específicas
         model = os.getenv(f'{provider_name}_MODEL', self.DEFAULT_MODELS[provider])
+        logger.info(f"Modelo original carregado para {provider.value}: {model}")
+        
+        # Correção para modelos DeepSeek sem prefixo correto
+        if provider == LLMProvider.DEEPSEEK and model and not model.startswith("deepseek/"):
+            original_model = model
+            model = f"deepseek/{model}"
+            logger.info(f"Modelo DeepSeek corrigido durante carregamento: {original_model} -> {model}")
+        
         base_url = os.getenv(f'{provider_name}_BASE_URL', self.DEFAULT_BASE_URLS[provider])
         temperature = float(os.getenv(f'{provider_name}_TEMPERATURE', '0.1'))
         max_tokens = os.getenv(f'{provider_name}_MAX_TOKENS')
@@ -148,15 +156,40 @@ class LLMConfigManager:
         """Verifica se um provedor está disponível"""
         return provider in self.configs
     
+    def _validate_model_format(self, config: LLMConfig) -> str:
+        """Valida e corrige o formato do modelo para compatibilidade com LiteL LM"""
+        model = config.model
+        original_model = model
+        
+        # Para DeepSeek, garante que o modelo tenha o prefixo correto
+        if config.provider == LLMProvider.DEEPSEEK:
+            if not model.startswith("deepseek/"):
+                model = f"deepseek/{model}"
+                logger.info(f"Modelo DeepSeek corrigido: {original_model} -> {model}")
+            else:
+                logger.info(f"Modelo DeepSeek já no formato correto: {model}")
+        
+        # Para Grok, garante que o modelo tenha o prefixo correto
+        elif config.provider == LLMProvider.GROK:
+            if not model.startswith("grok"):
+                model = f"grok-{model}"
+                logger.info(f"Modelo Grok corrigido: {original_model} -> {model}")
+        
+        logger.info(f"Modelo final a ser usado: {model}")
+        return model
+    
     def get_crewai_llm(self, provider: Optional[Union[LLMProvider, str]] = None):
         """Retorna instância de LLM configurada para CrewAI"""
         config = self.get_config(provider)
+        
+        # Valida e corrige o formato do modelo
+        validated_model = self._validate_model_format(config)
         
         try:
             if config.provider == LLMProvider.OPENAI:
                 from langchain_openai import ChatOpenAI
                 return ChatOpenAI(
-                    model=config.model,
+                    model=validated_model,
                     api_key=config.api_key,
                     base_url=config.base_url,
                     temperature=config.temperature,
@@ -167,7 +200,7 @@ class LLMConfigManager:
             elif config.provider == LLMProvider.ANTHROPIC:
                 from langchain_anthropic import ChatAnthropic
                 return ChatAnthropic(
-                    model=config.model,
+                    model=validated_model,
                     api_key=config.api_key,
                     temperature=config.temperature,
                     max_tokens=config.max_tokens,
@@ -177,7 +210,7 @@ class LLMConfigManager:
             elif config.provider == LLMProvider.DEEPSEEK:
                 from langchain_openai import ChatOpenAI
                 return ChatOpenAI(
-                    model=config.model,
+                    model=validated_model,
                     api_key=config.api_key,
                     base_url=config.base_url,
                     temperature=config.temperature,
@@ -188,7 +221,7 @@ class LLMConfigManager:
             elif config.provider == LLMProvider.GROK:
                 from langchain_openai import ChatOpenAI
                 return ChatOpenAI(
-                    model=config.model,
+                    model=validated_model,
                     api_key=config.api_key,
                     base_url=config.base_url,
                     temperature=config.temperature,
@@ -199,7 +232,7 @@ class LLMConfigManager:
             elif config.provider == LLMProvider.OLLAMA:
                 from langchain_ollama import ChatOllama
                 return ChatOllama(
-                    model=config.model,
+                    model=validated_model,
                     base_url=config.base_url,
                     temperature=config.temperature,
                     timeout=config.timeout

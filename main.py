@@ -278,7 +278,7 @@ def main():
     args = parser.parse_args()
     
     # Inicializa aplicação
-    app = StockAnalysisApp(args.model)
+    app = StockAnalysisApp(args.model) if args.model else StockAnalysisApp()
     
     if args.list_symbols:
         symbols = app.list_available_symbols()
