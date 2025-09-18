@@ -7,7 +7,7 @@ import json
 import os
 from bs4 import BeautifulSoup
 from typing import Dict, Any, Optional
-from crewai_tools import BaseTool
+from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
 import time
 import logging

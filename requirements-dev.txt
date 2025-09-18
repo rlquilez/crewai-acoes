@@ -1,27 +1,27 @@
 # Dependências de desenvolvimento
-pytest==7.4.3
-pytest-cov==4.1.0
-pytest-mock==3.12.0
-black==23.12.1
-flake8==6.1.0
-pylint==3.0.3
-mypy==1.8.0
-pre-commit==3.6.0
+pytest
+pytest-cov
+pytest-mock
+black
+flake8
+pylint
+mypy
+pre-commit
 
 # Ferramentas de desenvolvimento
-ipython==8.18.1
-jupyter==1.0.0
-notebook==7.0.6
+ipython
+jupyter
+notebook
 
 # Documentação
-mkdocs==1.5.3
-mkdocs-material==9.5.2
-mkdocs-mermaid2-plugin==1.1.1
+mkdocs
+mkdocs-material
+mkdocs-mermaid2-plugin
 
 # Testes de performance
-pytest-benchmark==4.0.0
-memory-profiler==0.61.0
+pytest-benchmark
+memory-profiler
 
 # Análise de qualidade
-bandit==1.7.5
-safety==2.3.5
+bandit
+safety
