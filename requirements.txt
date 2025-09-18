@@ -1,6 +1,5 @@
 # Core CrewAI dependencies
-crewai
-crewai-tools
+crewai[tools]
 
 # LLM providers
 anthropic

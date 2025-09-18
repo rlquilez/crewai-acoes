@@ -41,7 +41,12 @@
    - **Solução**: Alterado import de `from crewai_tools import BaseTool` para `from crewai.tools import BaseTool`
    - **Arquivo**: `src/tools/browser_tools.py`
 
-2. **Conflitos de Dependências Resolvidos**
+2. **Correção do Nome do Módulo CrewAI Tools**
+   - **Problema**: `crewai-tools` como dependência separada estava causando falhas na instalação
+   - **Solução**: Alterado de `crewai` + `crewai-tools` para `crewai[tools]` (forma recomendada)
+   - **Arquivo**: `requirements.txt`
+
+3. **Conflitos de Dependências Resolvidos**
    - Removidas todas as versões fixas dos arquivos requirements
    - Permitido que o pip resolva automaticamente as dependências compatíveis
    - Evitados conflitos entre websockets, pyee e outras dependências
@@ -62,10 +67,11 @@
 
 ### 📋 Arquivos Modificados
 
-1. `requirements.txt` - Removidas versões fixas
+1. `requirements.txt` - Removidas versões fixas e alterado para `crewai[tools]`
 2. `requirements-dev.txt` - Removidas versões fixas  
 3. `src/tools/browser_tools.py` - Corrigido import do BaseTool
 4. `requirements-frozen.txt` - Gerado com versões exatas instaladas
+5. `UPGRADE_REPORT.md` - Relatório completo da atualização
 
 ### 🚀 Benefícios da Atualização
 
