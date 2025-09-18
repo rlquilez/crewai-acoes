@@ -5,8 +5,10 @@
 ![CrewAI](https://img.shields.io/badge/CrewAI-v0.56.0-blue.svg)
 ![Python](https://img.shields.io/badge/Python-3.11+-green.svg)
 ![Docker](https://img.shields.io/badge/Docker-Multi--Arch-blue.svg)
+![LLM](https://img.shields.io/badge/LLM-Multi--Provider-brightgreen.svg)
 ![MCP](https://img.shields.io/badge/MCP-Alpha_Vantage-orange.svg)
 ![Tavily](https://img.shields.io/badge/Tavily-AI_Search-purple.svg)
+![SearXNG](https://img.shields.io/badge/SearXNG-Privacy-blue.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 **Sistema profissional de análise de ações com IA avançada, MCP e múltiplas fontes de dados**
@@ -387,10 +389,34 @@ O sistema utiliza uma abordagem em camadas para máxima confiabilidade:
 
 ### 📝 Como Obter as APIs
 
-#### 1. Anthropic API (Obrigatória)
+#### 1. 🤖 **Provedores de LLM** (Obrigatório - escolha um)
+
+**OpenAI (Recomendado)**
+1. Acesse [platform.openai.com](https://platform.openai.com)
+2. Crie uma conta e adicione créditos
+3. Gere uma API key na seção "API Keys"
+4. Configure: `DEFAULT_LLM=openai` e `OPENAI_API_KEY=sua_key`
+
+**Anthropic Claude**
 1. Acesse [console.anthropic.com](https://console.anthropic.com)
 2. Crie uma conta e adicione créditos
 3. Gere uma API key na seção "API Keys"
+4. Configure: `DEFAULT_LLM=anthropic` e `ANTHROPIC_API_KEY=sua_key`
+
+**Deepseek**
+1. Acesse [platform.deepseek.com](https://platform.deepseek.com)
+2. Registre-se e obtenha API key
+3. Configure: `DEFAULT_LLM=deepseek` e `DEEPSEEK_API_KEY=sua_key`
+
+**Grok (X.AI)**
+1. Acesse [x.ai](https://x.ai)
+2. Registre-se na plataforma
+3. Configure: `DEFAULT_LLM=grok` e `GROK_API_KEY=sua_key`
+
+**Ollama (Local)**
+1. Instale [Ollama](https://ollama.ai)
+2. Execute: `ollama pull llama3.2`
+3. Configure: `DEFAULT_LLM=ollama`
 
 #### 2. SearXNG e Browserless (Incluídos)
 - **SearXNG**: Motor de busca privado incluído no Docker Compose
@@ -457,9 +483,9 @@ docker-compose --profile jupyter up -d
 ```
 🚀 Sistema de Análise de ações CrewAI inicializado!
 📅 Data: 18/09/2025 14:30
-🤖 Modelo LLM: claude-3-sonnet-20240229
+🤖 Modelo LLM: Configurado automaticamente (OpenAI/Anthropic/Deepseek/Grok/Ollama)
 🔍 Search Provider: Tavily AI Search (AI-optimized)
-📊 Data Sources: MCP Alpha Vantage → Yahoo Finance
+📊 Data Sources: MCP Alpha Vantage → Alpha Vantage → Yahoo Finance
 ------------------------------------------------------------
 
 📊 Iniciando análise de PETR4.SA
@@ -479,10 +505,12 @@ docker-compose --profile jupyter up -d
 📁 Relatórios salvos na pasta 'reports/'
 
 📋 STATUS DAS FONTES:
-• Yahoo Finance: ✅ Ativo (base)
+• Yahoo Finance: ✅ Ativo (base sempre disponível)
 • MCP Alpha Vantage: ✅ Ativo (prioritário)
+• Alpha Vantage Traditional: ✅ Ativo (fallback)
 • Tavily AI Search: ✅ Ativo (otimizado para IA)
-• SearXNG Fallback: ✅ Disponível
+• SearXNG: ✅ Disponível (privacidade)
+• Google/SerpAPI: ✅ Disponível (fallback)
 ```
 
 ### 🧪 Testando as Novas Funcionalidades
@@ -627,12 +655,30 @@ reports/
 
 ### 📊 Dados Utilizados
 
-| Fonte | Tipo de Dados | Frequência |
-|-------|---------------|------------|
-| **Yahoo Finance** | Preços, volumes, fundamentals | Tempo real |
-| **Google Search** | Notícias, análises | On-demand |
-| **News API** | Notícias financeiras | Tempo real |
-| **Web Scraping** | Informações públicas | On-demand |
+#### 🏗️ Fontes de Dados Financeiros
+
+| Fonte | Tipo de Dados | Frequência | Prioridade |
+|-------|---------------|------------|------------|
+| **🤖 MCP Alpha Vantage** | Dados estruturados para IA, demonstrações financeiras completas | Tempo real | 1ª (Prioritário) |
+| **📊 Alpha Vantage Traditional** | Fundamentalistas, earnings, balanço, DRE, fluxo de caixa | Tempo real | 2ª (Fallback) |
+| **📈 Yahoo Finance** | Preços, volumes, indicadores básicos, histórico | Tempo real | 3ª (Base sempre ativa) |
+
+#### 🔍 Provedores de Busca
+
+| Provedor | Tipo de Busca | Características | Prioridade |
+|----------|---------------|-----------------|------------|
+| **🧠 Tavily AI Search** | Busca otimizada para IA | Respostas estruturadas, contexto para LLMs | 1ª (Recomendado) |
+| **🔍 SearXNG** | Motor de busca privado | Self-hosted, privacidade, sem limites | 2ª (Incluído no Docker) |
+| **🌐 Google Custom Search** | Busca tradicional | API oficial Google, ampla cobertura | 3ª (Fallback) |
+| **🐍 SerpAPI** | Busca premium | Dados estruturados, múltiplos engines | 4ª (Premium) |
+
+#### 🛠️ Ferramentas Auxiliares
+
+| Ferramenta | Função | Integração |
+|------------|---------|------------|
+| **Browserless** | Navegação headless para scraping | Docker incluído |
+| **Redis Cache** | Cache de dados e sessões | Opcional (Docker profile) |
+| **Jupyter Lab** | Análise interativa | Opcional (Docker profile) |
 
 ### 🛠 Ferramentas Técnicas
 
