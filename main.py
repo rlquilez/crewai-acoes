@@ -31,6 +31,35 @@ class StockAnalysisApp:
             llm_provider: Provedor de LLM a ser usado (openai, anthropic, deepseek, grok, ollama)
                          Se None, usa o provedor configurado em DEFAULT_LLM
         """
+        # Força limpeza de variáveis OpenAI se usando outro provedor
+        if os.getenv('DEFAULT_LLM') != 'openai':
+            print(f"🔧 Forçando uso do provedor: {os.getenv('DEFAULT_LLM', 'deepseek')}")
+            
+            # Remove temporariamente as variáveis OpenAI para evitar fallback
+            openai_backup = {}
+            for key in ['OPENAI_API_KEY', 'OPENAI_MODEL', 'OPENAI_BASE_URL']:
+                if key in os.environ:
+                    openai_backup[key] = os.environ[key]
+                    del os.environ[key]
+            
+            # Força configuração do LiteL LM para usar Deepseek
+            try:
+                import litellm
+                # Configura modelo padrão do LiteL LM
+                deepseek_model = f"deepseek/{os.getenv('DEEPSEEK_MODEL', 'deepseek-reasoner')}"
+                litellm.model = deepseek_model
+                print(f"🔧 LiteL LM configurado para: {deepseek_model}")
+                
+                # Configura API base e key
+                litellm.api_key = os.getenv('DEEPSEEK_API_KEY')
+                litellm.api_base = os.getenv('DEEPSEEK_BASE_URL')
+                
+            except ImportError:
+                print("⚠️ LiteL LM não disponível para configuração direta")
+            
+            # Adiciona variável para forçar o modelo específico
+            os.environ['LITELLM_MODEL'] = f"deepseek/{os.getenv('DEEPSEEK_MODEL', 'deepseek-reasoner')}"
+        
         # Verifica se as APIs estão configuradas
         self._check_api_keys()
         
@@ -100,17 +129,32 @@ class StockAnalysisApp:
             tasks = self._create_tasks_for_analysis(symbol, agents, analysis_type)
             
             # Cria e executa o crew
+            # Força o uso do LLM configurado (Deepseek)
+            from src.config import get_llm
+            crew_llm = get_llm()
+            
+            print(f"🔧 Forçando LLM do Crew: {type(crew_llm).__name__}")
+            
             crew = Crew(
                 agents=list(agents.values()),
                 tasks=list(tasks.values()),
                 verbose=True,
                 memory=True,
-                planning=True,
+                planning=False,  # Desabilita planning que pode usar LLM padrão
                 max_execution_time=3600,  # 1 hora
-                output_log_file=f"reports/execution_log_{symbol}_{datetime.now().strftime('%Y%m%d_%H%M')}.log"
+                output_log_file=f"reports/execution_log_{symbol}_{datetime.now().strftime('%Y%m%d_%H%M')}.log",
+                manager_llm=crew_llm  # Força o LLM do manager
             )
             
             print(f"🎬 Executando análise com {len(agents)} agentes...")
+            
+            # Debug: verifica LLMs dos agentes
+            print("🔍 Verificando LLMs dos agentes:")
+            for name, agent in agents.items():
+                print(f"  - {name}: {type(agent.llm).__name__ if hasattr(agent, 'llm') else 'Sem LLM'}")
+                if hasattr(agent, 'llm') and hasattr(agent.llm, 'model'):
+                    print(f"    Modelo: {agent.llm.model}")
+            
             result = crew.kickoff()
             
             print(f"\n✅ Análise de {symbol} concluída com sucesso!")
