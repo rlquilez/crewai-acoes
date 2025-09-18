@@ -8,6 +8,25 @@ from typing import Optional, Dict, Any, Union
 from dataclasses import dataclass
 from enum import Enum
 import logging
+from pathlib import Path
+
+# Carrega o arquivo .env se disponível
+try:
+    from dotenv import load_dotenv
+    # Tenta carregar .env do diretório raiz do projeto
+    project_root = Path(__file__).parent.parent.parent
+    env_path = project_root / '.env'
+    if env_path.exists():
+        load_dotenv(env_path)
+        print(f"✓ Arquivo .env carregado: {env_path}")
+    else:
+        print(f"⚠️ Arquivo .env não encontrado em: {env_path}")
+        # Tenta no diretório atual
+        if Path('.env').exists():
+            load_dotenv()
+            print("✓ Arquivo .env carregado do diretório atual")
+except ImportError:
+    print("⚠️ python-dotenv não instalado. Configure as variáveis de ambiente manualmente.")
 
 logger = logging.getLogger(__name__)
 

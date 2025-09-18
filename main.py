@@ -9,6 +9,9 @@ from typing import Optional, Dict, Any
 import argparse
 from dotenv import load_dotenv
 
+# Carrega variáveis de ambiente ANTES de importar outros módulos
+load_dotenv()
+
 # Adiciona o diretório src ao path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
@@ -28,9 +31,6 @@ class StockAnalysisApp:
             llm_provider: Provedor de LLM a ser usado (openai, anthropic, deepseek, grok, ollama)
                          Se None, usa o provedor configurado em DEFAULT_LLM
         """
-        # Carrega variáveis de ambiente
-        load_dotenv()
-        
         # Verifica se as APIs estão configuradas
         self._check_api_keys()
         

@@ -7,6 +7,14 @@ import os
 import sys
 from pathlib import Path
 
+# Carrega variáveis de ambiente ANTES de importar outros módulos
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    print("✓ dotenv carregado")
+except ImportError:
+    print("⚠️ python-dotenv não disponível")
+
 # Adiciona o diretório raiz ao path
 root_dir = Path(__file__).parent
 sys.path.insert(0, str(root_dir))
