@@ -35,12 +35,11 @@ class StockAnalysisApp:
         if os.getenv('DEFAULT_LLM') != 'openai':
             print(f"🔧 Forçando uso do provedor: {os.getenv('DEFAULT_LLM', 'deepseek')}")
             
-            # Remove temporariamente as variáveis OpenAI para evitar fallback
-            openai_backup = {}
-            for key in ['OPENAI_API_KEY', 'OPENAI_MODEL', 'OPENAI_BASE_URL']:
-                if key in os.environ:
-                    openai_backup[key] = os.environ[key]
-                    del os.environ[key]
+            # WORKAROUND: CrewAI exige chave OpenAI mesmo usando outros provedores
+            # Adiciona uma chave fake para passar na validação (não será usada)
+            if not os.getenv('OPENAI_API_KEY'):
+                os.environ['OPENAI_API_KEY'] = 'sk-fake-key-for-crewai-validation-only'
+                print("🔧 Adicionada chave OpenAI fake para validação do CrewAI")
             
             # Força configuração do LiteL LM para usar Deepseek
             try:
