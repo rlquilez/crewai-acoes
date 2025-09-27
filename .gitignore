@@ -204,11 +204,21 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+# Operating System files
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
 # CrewAI Stock Analysis specific
-reports/*.md
-reports/*.log
-reports/*.json
-reports/*.csv
+#reports/*.md
+#reports/*.log
+#reports/*.json
+#reports/*.csv
 logs/
 cache/
 temp/
